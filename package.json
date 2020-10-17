@@ -8,11 +8,11 @@
     "prettier": "prettier --write"
   },
   "dependencies": {
-    "babel-plugin-module-resolver": "^4.0.0",
     "resolve": "^1.17.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.3",
+    "babel-plugin-module-resolver": "^4.0.0",
     "jest": "^26.5.3",
     "prettier": "^2.1.2"
   }
