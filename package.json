@@ -1,0 +1,19 @@
+{
+  "name": "babel-plugin-file-shadowing",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "test": "jest",
+    "prettier": "prettier --write"
+  },
+  "dependencies": {
+    "babel-plugin-module-resolver": "^4.0.0",
+    "resolve": "^1.17.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.12.3",
+    "jest": "^26.5.3",
+    "prettier": "^2.1.2"
+  }
+}
