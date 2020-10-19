@@ -15,5 +15,8 @@
     "babel-plugin-module-resolver": "^4.0.0",
     "jest": "^26.5.3",
     "prettier": "^2.1.2"
+  },
+  "publishConfig": {
+    "@lyska:registry":"https://gitlab.com/api/v4/projects/21753117/packages/npm/"
   }
 }
