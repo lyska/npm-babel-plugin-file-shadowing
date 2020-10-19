@@ -1,5 +1,5 @@
 {
-  "name": "babel-plugin-file-shadowing",
+  "name": "@lyska/babel-plugin-file-shadowing",
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
