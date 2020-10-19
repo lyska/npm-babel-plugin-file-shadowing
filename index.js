@@ -31,18 +31,25 @@ const resolveModuleFromCandidates = (modulePath, candidates, extensions) => {
 
 const resolveModuleInHighestLayer = (
   absoluteLayerPaths,
-  moduleWithinLayerPath
+  moduleWithinLayerPath,
+  extensions
 ) => {
-  return resolveModuleFromCandidates(moduleWithinLayerPath, absoluteLayerPaths);
+  return resolveModuleFromCandidates(
+    moduleWithinLayerPath,
+    absoluteLayerPaths,
+    extensions
+  );
 };
 
 const resolveModuleInLowestLayer = (
   absoluteLayerPaths,
-  moduleWithinLayerPath
+  moduleWithinLayerPath,
+  extensions
 ) => {
   return resolveModuleFromCandidates(
     moduleWithinLayerPath,
-    absoluteLayerPaths.slice().reverse()
+    absoluteLayerPaths.slice().reverse(),
+    extensions
   );
 };
 
@@ -81,11 +88,33 @@ const transformSource = (nodePath, state) => {
   const rootDir = state.opts.root;
   const extensions = state.opts.extensions;
 
-  const absoluteImportFile = resolveModuleFromCandidates(
-    importFile,
-    [currentDir, rootDir],
-    extensions
-  );
+  const shadowingContext = getOrCreateShadowingContext(state);
+
+  // Check if import resolves relatively from current file
+  let absoluteImportFile = nodeResolvePath(importFile, currentDir, extensions);
+
+  // The file might have been imported through an alias that points to a layer
+  // in which the file doesn't exist
+  // In this case we have to check all layers to find the file
+  if (!absoluteImportFile) {
+    const importLayerInfo = getLayerInfo(
+      shadowingContext.absoluteLayerPaths,
+      path.resolve(currentDir, importFile)
+    );
+
+    if (importLayerInfo) {
+      absoluteImportFile = resolveModuleInHighestLayer(
+        shadowingContext.absoluteLayerPaths,
+        importLayerInfo.modulePath,
+        extensions
+      );
+    }
+  }
+
+  // Alternatively check if import resolves from root
+  if (!absoluteImportFile) {
+    absoluteImportFile = nodeResolvePath(importFile, rootDir, extensions);
+  }
 
   if (!absoluteImportFile) {
     console.warn(
@@ -93,8 +122,6 @@ const transformSource = (nodePath, state) => {
     );
     return;
   }
-
-  const shadowingContext = getOrCreateShadowingContext(state);
 
   // Identify from which layer module is imported
   const importModuleLayerInfo = getLayerInfo(

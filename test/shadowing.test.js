@@ -41,6 +41,16 @@ const selfImportFileSource = fs.readFileSync(selfImportFileName, "utf8");
 const exportsFileName = "./test/testproject/src/level1/exports.js";
 const exportsFileSource = fs.readFileSync(exportsFileName, "utf8");
 
+const notInBaseFileName = "./test/testproject/src/level2/notInBase.js";
+const notInBaseFileSource = fs.readFileSync(notInBaseFileName, "utf8");
+
+const alternativeExtensionsFileName =
+  "./test/testproject/src/level2/alternativeExtensions.js";
+const alternativeExtensionsFileSource = fs.readFileSync(
+  alternativeExtensionsFileName,
+  "utf8"
+);
+
 describe("babel-plugin-file-shadowing", () => {
   it("should resolve imports to highest layer", () => {
     const result = transform(
@@ -79,6 +89,32 @@ describe("babel-plugin-file-shadowing", () => {
     const expectedOutput = [
       'export { level2 } from "../level2/level2.js";',
       'export * from "../base/exports.js";',
+    ].join("\n");
+
+    expect(result.code).toBe(expectedOutput);
+  });
+
+  it("should resolve imports in all layers even if they don't exist in the aliased layer", () => {
+    const result = transform(
+      notInBaseFileSource,
+      getTransformerOpts(notInBaseFileName)
+    );
+
+    const expectedOutput = [
+      'import level1Only from "../level1/level1Only.js";',
+    ].join("\n");
+
+    expect(result.code).toBe(expectedOutput);
+  });
+
+  it("should resolve imports with alternative extensions", () => {
+    const result = transform(
+      alternativeExtensionsFileSource,
+      getTransformerOpts(alternativeExtensionsFileName)
+    );
+
+    const expectedOutput = [
+      'import level1OnlyAndTs from "../level1/level1OnlyAndTs.ts";',
     ].join("\n");
 
     expect(result.code).toBe(expectedOutput);
