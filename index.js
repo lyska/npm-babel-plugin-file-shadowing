@@ -193,12 +193,23 @@ const getOrCreateShadowingContext = (state) => {
   return state.shadowingContext;
 };
 
+const importVisitors = {
+  "ImportDeclaration|ExportDeclaration": transformSource,
+};
+
 module.exports = ({ types }) => ({
   name: "file-shadowing",
   pre(file) {
     this.types = types;
   },
   visitor: {
-    "ImportDeclaration|ExportDeclaration": transformSource,
+    Program: {
+      enter(programPath, state) {
+        programPath.traverse(importVisitors, state);
+      },
+      exit(programPath, state) {
+        programPath.traverse(importVisitors, state);
+      },
+    },
   },
 });
