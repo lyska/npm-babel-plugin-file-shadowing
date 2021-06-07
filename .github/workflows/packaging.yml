@@ -1,0 +1,25 @@
+name: Packaging
+on:
+  release:
+    types: [ published ]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    name: Build, test and publish package
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v1
+      - name: Setup node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12
+      - name: Get the version
+        id: get_version
+        run: echo ::set-output name=VERSION::${GITHUB_REF#refs/tags/}
+      - run: yarn install --frozen-lockfile
+      - run: yarn pack --filename=babel-plugin-file-shadowing-${{ steps.get_version.outputs.VERSION }}.tgz
+      - name: Archive production artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: babel-plugin-file-shadowing-${{ steps.get_version.outputs.VERSION }}.tgz
+          path: babel-plugin-file-shadowing-${{ steps.get_version.outputs.VERSION }}.tgz
