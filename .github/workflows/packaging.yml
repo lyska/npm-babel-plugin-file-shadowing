@@ -21,11 +21,6 @@ jobs:
       - name: Get the version
         id: get_version
         run: echo ::set-output name=VERSION::${GITHUB_REF#refs/tags/}
-      - name: Get release
-        id: get_release
-        uses: bruceadams/get-release@v1.2.2
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
       - run: yarn install --frozen-lockfile
       - run: yarn pack --filename=babel-plugin-file-shadowing-${{ steps.get_version.outputs.VERSION }}.tgz
       - name: Archive artifacts
@@ -33,14 +28,10 @@ jobs:
         with:
           name: babel-plugin-file-shadowing-${{ steps.get_version.outputs.VERSION }}.tgz
           path: babel-plugin-file-shadowing-${{ steps.get_version.outputs.VERSION }}.tgz
-      - uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
+      - uses: shogo82148/actions-upload-release-asset@v1
         with:
-          upload_url: ${{ steps.get_release.outputs.upload_url }}
+          upload_url: ${{ github.event.release.upload_url }}
           asset_path: babel-plugin-file-shadowing-${{ steps.get_version.outputs.VERSION }}.tgz
-          asset_name: babel-plugin-file-shadowing-${{ steps.get_version.outputs.VERSION }}.tgz
-          asset_content_type: application/gzip
       - run: yarn publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
