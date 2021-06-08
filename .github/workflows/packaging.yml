@@ -28,6 +28,6 @@ jobs:
         with:
           name: babel-plugin-file-shadowing-${{ steps.get_version.outputs.VERSION }}.tgz
           path: babel-plugin-file-shadowing-${{ steps.get_version.outputs.VERSION }}.tgz
-      - run: yarn publish babel-plugin-file-shadowing-${{ steps.get_version.outputs.VERSION }}.tgz
+      - run: yarn publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
