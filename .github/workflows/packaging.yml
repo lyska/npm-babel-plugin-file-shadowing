@@ -22,12 +22,12 @@ jobs:
         id: get_version
         run: echo ::set-output name=VERSION::${GITHUB_REF#refs/tags/}
       - run: yarn install --frozen-lockfile
-      - run: yarn pack --filename=babel-plugin-file-shadowing-${{ steps.get_version.outputs.VERSION }}.tgz
+      - run: yarn pack --filename=npm-babel-plugin-file-shadowing-${{ steps.get_version.outputs.VERSION }}.tgz
       - name: Archive artifacts
         uses: actions/upload-artifact@v2
         with:
-          name: babel-plugin-file-shadowing-${{ steps.get_version.outputs.VERSION }}.tgz
-          path: babel-plugin-file-shadowing-${{ steps.get_version.outputs.VERSION }}.tgz
+          name: npm-babel-plugin-file-shadowing-${{ steps.get_version.outputs.VERSION }}.tgz
+          path: npm-babel-plugin-file-shadowing-${{ steps.get_version.outputs.VERSION }}.tgz
       - run: yarn publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
