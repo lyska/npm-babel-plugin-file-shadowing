@@ -1,7 +1,7 @@
 name: Packaging
 on:
-  push:
-    branches:  [ main ]
+  release:
+    types: [ published ]
 jobs:
   build:
     permissions:
@@ -22,21 +22,12 @@ jobs:
         id: get_version
         run: echo ::set-output name=VERSION::${GITHUB_REF#refs/tags/}
       - run: yarn install --frozen-lockfile
-      - if: startsWith(github.ref, 'refs/tags/')
-        run: yarn pack --filename=babel-plugin-file-shadowing-${{ steps.get_version.outputs.VERSION }}.tgz
+      - run: yarn pack --filename=babel-plugin-file-shadowing-${{ steps.get_version.outputs.VERSION }}.tgz
       - name: Archive artifacts
-        if: startsWith(github.ref, 'refs/tags/')
         uses: actions/upload-artifact@v2
         with:
           name: babel-plugin-file-shadowing-${{ steps.get_version.outputs.VERSION }}.tgz
           path: babel-plugin-file-shadowing-${{ steps.get_version.outputs.VERSION }}.tgz
-      - uses: softprops/action-gh-release@v1
-        if: startsWith(github.ref, 'refs/tags/')
-        with:
-          files: babel-plugin-file-shadowing-${{ steps.get_version.outputs.VERSION }}.tgz
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - run: yarn publish
-        if: startsWith(github.ref, 'refs/tags/')
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
