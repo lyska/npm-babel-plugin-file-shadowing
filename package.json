@@ -1,5 +1,5 @@
 {
-  "name": "@lyska/babel-plugin-file-shadowing",
+  "name": "@lyska-ug/babel-plugin-file-shadowing",
   "version": "1.0.1",
   "main": "index.js",
   "license": "MIT",
@@ -17,6 +17,6 @@
     "prettier": "^2.1.2"
   },
   "publishConfig": {
-    "@lyska:registry":"https://gitlab.com/api/v4/projects/21753117/packages/npm/"
+    "@lyska-ug:registry":"https://npm.pkg.github.com"
   }
 }
