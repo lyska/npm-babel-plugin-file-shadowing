@@ -1,5 +1,5 @@
 {
-  "name": "@lyska-ug/babel-plugin-file-shadowing",
+  "name": "babel-plugin-file-shadowing",
   "version": "1.0.1",
   "main": "index.js",
   "license": "MIT",
@@ -16,7 +16,11 @@
     "jest": "^26.5.3",
     "prettier": "^2.1.2"
   },
+  "repository": {
+    "type": "git",
+    "url": "ssh://git@github.com:Lyska-UG/npm-babel-plugin-file-shadowing.git",
+  },
   "publishConfig": {
-    "@lyska-ug:registry":"https://npm.pkg.github.com"
+    "registry":"https://npm.pkg.github.com"
   }
 }
