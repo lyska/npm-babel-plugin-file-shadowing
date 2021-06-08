@@ -22,7 +22,8 @@ jobs:
         id: get_version
         run: echo ::set-output name=VERSION::${GITHUB_REF#refs/tags/}
       - run: yarn install --frozen-lockfile
-      - run: yarn pack --filename=babel-plugin-file-shadowing-${{ steps.get_version.outputs.VERSION }}.tgz
+      - if: startsWith(github.ref, 'refs/tags/')
+        run: yarn pack --filename=babel-plugin-file-shadowing-${{ steps.get_version.outputs.VERSION }}.tgz
       - name: Archive artifacts
         if: startsWith(github.ref, 'refs/tags/')
         uses: actions/upload-artifact@v2
