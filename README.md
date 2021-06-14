@@ -1,3 +1,5 @@
+[![Packaging](https://github.com/lyska/npm-babel-plugin-file-shadowing/actions/workflows/packaging.yml/badge.svg)](https://github.com/lyska/npm-babel-plugin-file-shadowing/actions/workflows/packaging.yml)
+
 # babel-plugin-file-shadowing
 
 Babel plugin that allows using file shadowing to override module imports based on file path conventions.
